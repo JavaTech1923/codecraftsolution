@@ -62,7 +62,7 @@ Run `npm install`, then `npm start`. The UI is at `http://localhost:4200`. The d
 
 ### Run the API
 
-Set `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `JWT_SECRET_BASE64` and `CORS_ALLOWED_ORIGINS` in the environment. From `backend`, run `mvn spring-boot:run`. Flyway creates the schema and loads starter content automatically. To initialize an administrator, set both `ADMIN_BOOTSTRAP_EMAIL` and `ADMIN_BOOTSTRAP_PASSWORD` for the first run. The bootstrap account is a `SUPER_ADMIN`; remove bootstrap credentials from the environment after it has been created.
+Set `DATABASE_URL` (a PostgreSQL URI or JDBC URL), `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `JWT_SECRET_BASE64` and `CORS_ALLOWED_ORIGINS` in the environment. When run from `backend`, the application also imports the ignored repo-root `.env.local` file created by Neon CLI. It prefers `DATABASE_URL_UNPOOLED` for Flyway migrations and converts Neon PostgreSQL URIs to JDBC URLs without printing credentials. Run `mvn spring-boot:run` from `backend`. Flyway creates the schema and loads starter content automatically. To initialize an administrator, set both `ADMIN_BOOTSTRAP_EMAIL` and `ADMIN_BOOTSTRAP_PASSWORD` for the first run. The bootstrap account is a `SUPER_ADMIN`; remove bootstrap credentials from the environment after it has been created.
 
 ## Free demo deployment
 
@@ -72,7 +72,7 @@ For a free demo, deploy the frontend to Cloudflare Pages, the API as a Render Do
 
 1. Push this project-only repository to GitHub. Create the Cloudflare Pages project with root directory `codeCraftTechnology`, build command `npm ci && npm run build`, and output directory `dist/aether-web/browser`.
 2. Create a Neon Postgres project in a region near the Render service. Use its pooled connection host and SSL. Configure Render with root directory `backend`, Dockerfile `Dockerfile`, and a free web-service instance.
-3. Set Render secrets/environment variables: `DATABASE_URL` in JDBC form (`jdbc:postgresql://<pooled-host>/<database>?sslmode=require`), `DATABASE_USERNAME`, `DATABASE_PASSWORD`, and a newly generated `JWT_SECRET_BASE64` containing at least 32 random bytes. Set `CORS_ALLOWED_ORIGINS` to the exact Pages site origin. Use `DB_POOL_SIZE=3` for the free instance.
+3. Set Render secrets/environment variables: `DATABASE_URL` to the Neon PostgreSQL connection URI and a newly generated `JWT_SECRET_BASE64` containing at least 32 random bytes. The backend parses Neon URIs to JDBC; if using a JDBC URL, set `DATABASE_JDBC_URL` and provide `DATABASE_USERNAME` and `DATABASE_PASSWORD` separately. Set `CORS_ALLOWED_ORIGINS` to the exact Pages site origin. Use `DB_POOL_SIZE=3` for the free instance.
 4. After Render provides the API URL, set that URL in `src/environments/environment.prod.ts` as the API base ending in `/api/v1`, then push the change to trigger the Pages build. Do not put database or JWT secrets in frontend configuration.
 5. Optionally set `ADMIN_BOOTSTRAP_EMAIL` and a unique `ADMIN_BOOTSTRAP_PASSWORD` (at least 14 characters) for first-time admin provisioning. Remove both variables after the account is created.
 6. Verify the public API, contact form, and admin login. `/actuator/health` returned 403 in a local check; use `/api/v1/hero` as the Render health-check path unless actuator access is fixed.

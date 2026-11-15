@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: codecraft-api
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: SIT
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/hero
+    autoDeployTrigger: commit
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET_BASE64
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        value: http://localhost:4200
+      - key: DB_POOL_SIZE
+        value: "3"

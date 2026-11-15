@@ -1,1 +1,1 @@
-export const environment = { production: true, apiBaseUrl: '/api/v1' } as const;
+export const environment = { production: true, apiBaseUrl: 'https://codecraft-api-ysko.onrender.com/api/v1' } as const;

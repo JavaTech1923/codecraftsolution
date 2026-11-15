@@ -1,0 +1,10 @@
+/codeCraftTechnology/node_modules/
+/codeCraftTechnology/dist/
+/codeCraftTechnology/.angular/
+/codeCraftTechnology/out-tsc/
+/backend/target/
+**/.env
+**/.env.*
+.DS_Store
+.idea/
+.vscode/

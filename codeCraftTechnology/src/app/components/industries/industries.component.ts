@@ -1,0 +1,5 @@
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ContentApiService } from '../../core/services/content-api.service';
+@Component({ selector: 'app-industries', standalone: true, imports: [AsyncPipe], template: `<section class="section-wrap section-space industries-section" id="industries"><div class="section-heading"><div><div class="eyebrow">INDUSTRIES WE SERVE</div><h2>Context is the <span class="gradient-text">real advantage.</span></h2></div><p>We pair deep engineering with the domain understanding to solve problems that matter.</p></div>@if (industries$ | async; as industries) {<div class="industry-grid">@for (industry of industries; track industry.id) {<article class="industry-card"><span>{{industry.icon}}</span><h3>{{industry.name}}</h3><p>{{industry.description}}</p><span class="industry-arrow">↗</span></article>}</div>}</section>` })
+export class IndustriesComponent { readonly industries$ = inject(ContentApiService).industries(); }

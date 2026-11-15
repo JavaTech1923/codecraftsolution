@@ -1,0 +1,5 @@
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ContentApiService } from '../../core/services/content-api.service';
+@Component({ selector: 'app-process-timeline', standalone: true, imports: [AsyncPipe], template: `<section class="section-wrap section-space process-section" id="process"><div class="section-heading"><div><div class="eyebrow">HOW WE WORK</div><h2>Clarity at every <span class="gradient-text">milestone.</span></h2></div><p>A transparent, collaborative process that turns uncertainty into forward momentum.</p></div>@if (steps$ | async; as steps) {<div class="timeline">@for (step of steps; track step.title; let i = $index) {<article class="timeline-step"><div class="timeline-node">0{{i+1}}</div><div><h3>{{step.title}}</h3><p>{{step.description}}</p></div><span class="timeline-duration">{{step.duration}}</span></article>}</div>}</section>` })
+export class ProcessTimelineComponent { readonly steps$ = inject(ContentApiService).process(); }
